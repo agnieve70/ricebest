@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\PaymentXendit;
 use App\Http\Controllers\Controller;
+use App\Models\Invoices;
 use App\Models\Products;
 use App\Models\User;
 use Exception;
@@ -19,7 +20,12 @@ class ProductController extends Controller
     public function webhook(Request $request){
         logger("REQUEST DATA:");
         logger($request);
-        
+
+        if($invoice = Invoices::where('invoice_no', $request->external_id)->first()){
+            $invoice->status = 1;
+            $invoice->save();
+        }
+
         return response()->json([
             "status" => 1,
             "message" => "Fetched Products",

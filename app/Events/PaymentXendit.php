@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Invoices;
 use App\Models\Products;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
@@ -52,6 +53,14 @@ class PaymentXendit
         $product_info = Products::where('id', $this->product_id)->first();
 
         $str_rnd = Str::random(8);
+
+        $invoice = new Invoices();
+        $invoice->product_id = $product_info->id;
+        $invoice->invoice_no = $str_rnd;
+        $invoice->amount = $product_info->price * $this->quantity;
+        $invoice->quantity= $this->quantity;
+        $invoice->user_id= $user_info->id;
+        $invoice->save();
 
         $params = [
             'external_id' => $str_rnd,
