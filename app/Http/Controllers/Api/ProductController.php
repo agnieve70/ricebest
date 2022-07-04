@@ -16,11 +16,14 @@ use Xendit\Xendit;
 class ProductController extends Controller
 {
     //
-    public function webhook($result){
+    public function webhook(Request $request){
+        logger("REQUEST DATA:");
+        logger($request);
+        
         return response()->json([
             "status" => 1,
             "message" => "Fetched Products",
-            "data" => $result
+            "data" => $request
         ], 200);
     }
 
