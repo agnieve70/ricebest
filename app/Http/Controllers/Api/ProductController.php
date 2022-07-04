@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\PaymentXendit;
 use App\Http\Controllers\Controller;
+use App\Models\Clients;
+use App\Models\Farmers;
 use App\Models\Invoices;
 use App\Models\Products;
 use App\Models\User;
@@ -17,6 +19,22 @@ use Xendit\Xendit;
 class ProductController extends Controller
 {
     //
+    public function totals(){
+        $farmer = Farmers::count();
+        $client = Clients::count();
+        $transactions = Invoices::count();
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Fetched Total Amount",
+            "data" => [
+                "farmers" => $farmer,
+                "clients" => $client,
+                "transactions" => $transactions
+            ]
+        ], 200);
+    }
+
     public function transactions(){
         
         $transactions = Invoices::join('products', 'products.id', 'invoice.product_id')

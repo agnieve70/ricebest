@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import SmallCard from "../../UI/small-card";
 import {
     Chart as ChartJS,
@@ -13,6 +13,9 @@ import {
 import { Line } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 
+const auth_token = localStorage.getItem("auth_token");
+
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -23,7 +26,49 @@ ChartJS.register(
     Legend
 );
 
+async function getTransactions() {
+  const res = await fetch('api/transactions', {
+      headers: {
+          'Authorization': `Bearer ${auth_token}`
+      }
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+      throw new Error(data.message || "Something wnt wrong");
+  }
+
+  return data.data;
+}
+
+async function getTotals() {
+  const res = await fetch('api/totals', {
+      headers: {
+          'Authorization': `Bearer ${auth_token}`
+      }
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+      throw new Error(data.message || "Something wnt wrong");
+  }
+  console.log("TOTALS: ", data.data);
+  return data.data;
+}
+
 function Dashboard() {
+  const [transactions, setTransactions] = useState([]);
+  const [totals, setTotals] = useState([]);
+  
+  useEffect(()=> {
+    getTransactions().then((data)=> {
+        setTransactions(data);
+    });
+
+    getTotals().then((data)=> {
+      setTotals(data);
+    });
+}, []);
 
 const options = {
   responsive: true,
@@ -38,14 +83,14 @@ const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = transactions.map((trans) => trans.created_at);
 
 const data = {
   labels,
   datasets: [
     {
       label: 'Transactions',
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: transactions.map((trans) => trans.amount),
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
@@ -60,7 +105,7 @@ const data = {
                         color={"primary"}
                         title={"No. of Clients"}
                         subtitle={"Active"}
-                        value={20}
+                        value={totals.clients}
                     />
                 </div>
                 <div className="col-md-4">
@@ -68,7 +113,7 @@ const data = {
                         color={"success"}
                         title={"No. of Farmers"}
                         subtitle={"Active"}
-                        value={50}
+                        value={totals.farmers}
                     />
                 </div>
                 <div className="col-md-4">
@@ -76,7 +121,7 @@ const data = {
                         color={"warning"}
                         title={"No. of Trans."}
                         subtitle={"Active"}
-                        value={20}
+                        value={totals.transactions}
                     />
                 </div>
             </div>

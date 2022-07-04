@@ -59,7 +59,7 @@ function Sidebar() {
                     </a>
                 </li>
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a
                         data-bs-toggle="tab"
                         style={aLink}
@@ -68,7 +68,7 @@ function Sidebar() {
                     >
                         PAYMENT INTEGRATION TEST
                     </a>
-                </li>
+                </li> */}
             </ul>
         </div>
     );

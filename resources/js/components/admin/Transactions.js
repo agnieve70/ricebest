@@ -46,7 +46,7 @@ function Transactions() {
                     <td>{trans.title}</td>
                     <td>{trans.created_at}</td>
                     <td>{trans.name}</td>
-                    <td>{trans.status === 1 ? 'PAID' : 'PENDING'}</td>
+                    <td>{trans.status == 1 ? 'PAID' : 'PENDING'}</td>
                 </tr>)}
               </tbody>
           </table>
