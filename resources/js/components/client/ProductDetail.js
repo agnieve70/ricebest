@@ -35,10 +35,32 @@ async function getComments(id) {
 
 async function createComment(id, content) {
     const res = await fetch(`/api/comment/create`, {
-        method:'POST',
+        method: 'POST',
         body: JSON.stringify({
             product_id: id,
             content: content
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth_token}`
+        }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || "Something wnt wrong");
+    }
+    console.log(data);
+    return data.data;
+}
+
+async function addOrder(product_id, amount, quantity) {
+    const res = await fetch(`/api/product/order`, {
+        method: 'POST',
+        body: JSON.stringify({
+            product_id: product_id,
+            amount: amount,
+            quantity: quantity
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -59,6 +81,7 @@ function ProductDetail() {
     const [comments, setComments] = useState({});
     const [content, setContent] = useState("");
     const [trigger, setTrigger] = useState(0);
+    const [quantity, setQuantity] = useState(0);
 
     let { id } = useParams();
 
@@ -72,13 +95,22 @@ function ProductDetail() {
         })
     }, [trigger]);
 
-    async function submitHandler(e){
+    async function submitHandler(e) {
         e.preventDefault();
         alert("Saved!");
         const result = await createComment(id, content);
-        console.log("ADD RESULT",result);
+        console.log("ADD RESULT", result);
+        if (result) {
+            setTrigger(trigger + 1);
+        }
+    }
+
+    async function orderHandler(e){
+        e.preventDefault();
+        const result = await addOrder(product.id, (quantity * product.price), quantity);
+        console.log("Add Order: ", result);
         if(result){
-            setTrigger(trigger+ 1);
+            window.location.href=result.invoice_url;
         }
     }
 
@@ -93,15 +125,15 @@ function ProductDetail() {
                 <p>Description</p>
                 <p>{product.description}</p>
                 <p> <b>Comments</b> </p>
-               {comments.length > 0 && comments.map(comment =>  
-               <>
-               <span>{comment.content}</span> <br />
-               <span className='me-3'><b>{comment.name}</b></span>
-               <span>{comment.created_at}</span><br /> <br />
-               </>)}
+                {comments.length > 0 && comments.map(comment =>
+                    <>
+                        <span>{comment.content}</span> <br />
+                        <span className='me-3'><b>{comment.name}</b></span>
+                        <span>{comment.created_at}</span><br /> <br />
+                    </>)}
                 <form action="" method='POST' onSubmit={submitHandler}>
                     <div className="form-group">
-                        <textarea value={content} onChange={(e)=> setContent(e.target.value)} className="form-control" name="" id="" cols="30" rows="4"></textarea>
+                        <textarea value={content} onChange={(e) => setContent(e.target.value)} className="form-control" name="" id="" cols="30" rows="4"></textarea>
                     </div>
                     <button type='submit' className="btn btn-primary">Add Comment</button>
                 </form>
@@ -110,11 +142,17 @@ function ProductDetail() {
             <br />
             <br />
             <div class="fixed-bottom">
-            <div class="d-grid gap-2">
-                <button class="btn btn-danger" type="button"><b>ORDER ONLINE</b></button>
+                <form action="" onSubmit={orderHandler}>
+                    <div className="form-group">
+                        <label htmlFor="quantity">Quantity <b>(Total Amount: {quantity * product.price})</b></label>
+                        <input id="quantity" className='form-control' value={quantity} onChange={(e)=> setQuantity(e.target.value)} />
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-danger" type="submit"><b>ORDER ONLINE</b></button>
+                    </div>
+                </form>
             </div>
-            </div>
-            
+
         </div>
     )
 }

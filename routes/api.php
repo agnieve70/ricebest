@@ -33,8 +33,9 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::post("product/create", [ProductController::class, "create"]);
     Route::post("product/update", [ProductController::class, "update"]);
     Route::delete("product/delete/{id}", [ProductController::class, "delete"]);
-    Route::delete("product/order", [ProductController::class, "order"]);
-    Route::delete("product/webhook", [ProductController::class, "webhook"]);
+    
+    Route::post("product/order", [ProductController::class, "order"]);
+    Route::post("product/webhook", [ProductController::class, "webhook"]);
 
     Route::get("farmers", [FarmerController::class, "index"]);
     Route::get("farmer/{id}", [FarmerController::class, "getFarmer"]);

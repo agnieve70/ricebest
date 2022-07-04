@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\PaymentXendit;
 use App\Http\Controllers\Controller;
 use App\Models\Products;
 use App\Models\User;
@@ -23,77 +24,14 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function order(){
-        Xendit::setApiKey('xnd_public_development_9OMRCYJBbLm797GIgDk7IwlXof0bCIqTVJWbPN187rw9hyNWeXN4UDzTr4PqX');
+    public function order(Request $request){
 
-        $user_info = User::where('id', auth()->user()->id)->first();
-        $str_rnd = Str::random(8);
-
-        $params = [
-            'external_id' => $str_rnd,
-            'amount' => 495,
-            'description' => 'Xffiliate Pro Plan Subscription',
-            'invoice_duration' => 86400,
-            'customer' => [
-                'given_names' => $user_info->name,
-                'surname' => $user_info->email,
-                'address' => [
-                   
-                ]
-            ],
-            'customer_notification_preference' => [
-                'invoice_created' => [
-                    'whatsapp',
-                    'sms',
-                    'email',
-                    'viber'
-                ],
-                'invoice_reminder' => [
-                    'whatsapp',
-                    'sms',
-                    'email',
-                    'viber'
-                ],
-                'invoice_paid' => [
-                    'whatsapp',
-                    'sms',
-                    'email',
-                    'viber'
-                ],
-                'invoice_expired' => [
-                    'whatsapp',
-                    'sms',
-                    'email',
-                    'viber'
-                ]
-            ],
-            'success_redirect_url' => 'https://xffiliate.xtendly.com/payment/success?xffiliate=23429gsgals82gdfg',
-            'failure_redirect_url' => 'https://xffiliate.xtendly.com/payment/failed?xffiliate=23429gsgals82gdfg',
-            'currency' => 'PHP',
-            'items' => [
-                [
-                    'name' => 'Xffiliate Premium',
-                    'quantity' => 1,
-                    'price' => 495,
-                    'category' => 'Subscription',
-                    'url' => 'https://xffiliate.xtendly.com/'
-                ]
-            ],
-            'fees' => [
-                [
-                    'type' => 'ADMIN',
-                    'value' => 495
-                ]
-            ]
-        ];
-
-        $createInvoice = \Xendit\Invoice::create($params);
-
+        $payment = new PaymentXendit(auth()->user()->id, $request->product_id, $request->amount, $request->quantity);
+        $result = $payment->setPayement();
         return response()->json([
             "status" => 1,
-            "message" => "Invoice Created",
-            "data" => $createInvoice,
-            "user" => $user_info
+            "message" => "Invoice Successfully Created",
+            "data" => $result,
         ], 200);
     }
 
