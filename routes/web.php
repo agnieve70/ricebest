@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-if (App::environment('production')) {
-    URL::forceScheme('https');
-}
+// if (App::environment('production')) {
+//     URL::forceScheme('https');
+// }
 
 /*
 |--------------------------------------------------------------------------

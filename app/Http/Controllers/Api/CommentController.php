@@ -14,7 +14,7 @@ class CommentController extends Controller
     public function index($id)
     {
         try{
-            $comments = Comments::find($id)->where('user_id', auth()->user()->id)->get();
+            $comments = Comments::where('product_id',$id)->join('users', 'users.id','comments.user_id')->get();
 
             return response()->json([
                 "status" => 1,
@@ -33,7 +33,7 @@ class CommentController extends Controller
     public function create(Request $request)
     {
 
-        try {
+        // try {
             $request->validate([
                 'product_id' => 'required',
                 'content' => 'required',
@@ -50,12 +50,12 @@ class CommentController extends Controller
                 "message" => "Comment Saved",
                 "data" => $comment,
             ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                "status" => 0,
-                "message" => $e->getMessage(),
-            ], 500);
-        }
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         "status" => 0,
+        //         "message" => $e->getMessage(),
+        //     ], 500);
+        // }
     }
 
     public function update(Request $request)

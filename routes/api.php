@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FarmerController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\OrderingController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::post("product/create", [ProductController::class, "create"]);
     Route::post("product/update", [ProductController::class, "update"]);
     Route::delete("product/delete/{id}", [ProductController::class, "delete"]);
+    Route::delete("product/order", [ProductController::class, "order"]);
+    Route::delete("product/webhook", [ProductController::class, "webhook"]);
 
     Route::get("farmers", [FarmerController::class, "index"]);
     Route::get("farmer/{id}", [FarmerController::class, "getFarmer"]);
@@ -53,6 +56,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::get("contacts", [MessageController::class, "contacts"]);
     Route::get("messages", [MessageController::class, "index"]);
     Route::post("message/create", [MessageController::class, "create"]);
+
+    Route::get("payts", [OrderingController::class, "index"]);
 
 });
 
