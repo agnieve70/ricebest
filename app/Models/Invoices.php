@@ -9,6 +9,8 @@ class Invoices extends Model
 {
     use HasFactory;
 
+    protected $table = 'invoice';
+
     public function user()
     {
         return $this->belongsTo(Clients::class);
