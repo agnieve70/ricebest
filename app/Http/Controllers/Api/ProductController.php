@@ -17,6 +17,19 @@ use Xendit\Xendit;
 class ProductController extends Controller
 {
     //
+    public function transactions(){
+        
+        $transactions = Invoices::join('products', 'products.id', 'invoice.product_id')
+        ->join('users', 'users.id', 'invoice.user_id')
+        ->get();
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Fetched Transactions",
+            "data" => $transactions
+        ], 200);
+    }
+
     public function webhook(Request $request){
         logger("REQUEST DATA:");
         logger($request);

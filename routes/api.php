@@ -29,6 +29,7 @@ Route::post("product/webhook", [ProductController::class, "webhook"]);
 Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::get("email-confirmation/{code}", [RegisterController::class, "emailConfirmation"]);
 
+    Route::get("transactions", [ProductController::class, "transactions"]);
     Route::get("products", [ProductController::class, "index"]);
     Route::get("product/{id}", [ProductController::class, "getProduct"]);
     Route::post("product/create", [ProductController::class, "create"]);
