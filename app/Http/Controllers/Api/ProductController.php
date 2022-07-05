@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function clientOrders(){
         $transactions = Invoices::join('products', 'products.id', 'invoice.product_id')
         ->where('user_id', auth()->user()->id)
-        ->where('status', null)
+        ->where('status', "null")
         ->get();
 
         return response()->json([
