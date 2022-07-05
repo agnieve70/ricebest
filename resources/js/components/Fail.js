@@ -10,4 +10,4 @@ function Fail() {
     )
 }
 
-export default Success
+export default Fail

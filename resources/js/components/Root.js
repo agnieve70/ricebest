@@ -9,6 +9,7 @@ import Login from './Login';
 import Register from './Register';
 import Navbar from './Navbar';
 import Success from './Success';
+import Fail from './Fail';
 
 // After
 import { createRoot } from 'react-dom/client';
