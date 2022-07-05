@@ -8,6 +8,7 @@ import ProductDetail from './client/ProductDetail';
 import Login from './Login';
 import Register from './Register';
 import Navbar from './Navbar';
+import Success from './Success';
 
 // After
 import { createRoot } from 'react-dom/client';
@@ -21,6 +22,8 @@ root.render(
                 <Route path="/" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/aboutUs" element={<About />} />
+                <Route path="/success" element={<Success />} />
+                <Route path="/fail" element={<Fail />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/client-dashboard" element={<ClientDashboard />} />
                 <Route path="/product-detail/:id" element={<ProductDetail />} />
