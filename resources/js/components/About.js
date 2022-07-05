@@ -27,7 +27,7 @@ function About() {
                           help trade crops in the community over the Internet
                           for more immediate reservations and selling of crops.
                       </p>
-                      <p>
+                      <p className='mb-5'>
                           The site is accessible to anyone who are interested in
                           dealing business agriculture, but only the (ICIFA)
                           members can sign up for the system as farmers or
@@ -41,6 +41,7 @@ function About() {
                           customers maybe for as long as they are connected to
                           the Internet.
                       </p>
+                      <span><a href="https://gonativeio.s3.amazonaws.com/static/62c389551983a24e5da55d59/app-release.apk">Click Here</a> to Download Android APK:</span>
                   </div>
               </div>
           </div>
