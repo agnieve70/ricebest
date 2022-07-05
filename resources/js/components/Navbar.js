@@ -54,12 +54,12 @@ function Navbar() {
                             role === 'client' &&
                             <>
                                 <li className="bg-success text-light p-3 mb-3">
-                                    <LinkContainer to="/orders">
+                                    <LinkContainer to="/client-orders">
                                         <a className="nav-link text-light"><b>Orders</b></a>
                                     </LinkContainer>
                                 </li>
                                 <li className="bg-success text-light p-3 mb-3">
-                                    <LinkContainer to="/transactions">
+                                    <LinkContainer to="/client-transactions">
                                         <a className="nav-link text-light"><b>Transactions</b></a>
                                     </LinkContainer>
                                 </li>

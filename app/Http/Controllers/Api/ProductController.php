@@ -19,6 +19,30 @@ use Xendit\Xendit;
 class ProductController extends Controller
 {
     //
+    public function clientOrders(){
+        $transactions = Invoices::join('products', 'products.id', 'invoice.product_id')
+        ->where('user_id', auth()->user()->id)
+        ->where('status', null)
+        ->get();
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Fetched Transactions",
+            "data" => $transactions,
+        ], 200);
+    }
+    public function clientTransactions(){
+        $transactions = Invoices::join('products', 'products.id', 'invoice.product_id')
+        ->where('user_id', auth()->user()->id)
+        ->where('status', 1)
+        ->get();
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Fetched Transactions",
+            "data" => $transactions
+        ], 200);
+    }
     public function totals(){
         $farmer = Farmers::count();
         $client = Clients::count();

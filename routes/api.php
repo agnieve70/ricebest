@@ -31,6 +31,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function () {
 
     Route::get("totals", [ProductController::class, "totals"]);
     Route::get("transactions", [ProductController::class, "transactions"]);
+    Route::get("client-transactions", [ProductController::class, "clientTransactions"]);
+    Route::get("client-orders", [ProductController::class, "clientOrders"]);
     Route::get("products", [ProductController::class, "index"]);
     Route::get("product/{id}", [ProductController::class, "getProduct"]);
     Route::post("product/create", [ProductController::class, "create"]);

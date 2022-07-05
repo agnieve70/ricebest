@@ -13,6 +13,8 @@ import Fail from './Fail';
 
 // After
 import { createRoot } from 'react-dom/client';
+import ClientTransaction from './client/ClientTransaction';
+import ClientOrders from './client/ClientOrders';
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
@@ -25,6 +27,8 @@ root.render(
                 <Route path="/aboutUs" element={<About />} />
                 <Route path="/success" element={<Success />} />
                 <Route path="/fail" element={<Fail />} />
+                <Route path="/client-transactions" element={<ClientTransaction />} />
+                <Route path="/client-orders" element={<ClientOrders />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/client-dashboard" element={<ClientDashboard />} />
                 <Route path="/product-detail/:id" element={<ProductDetail />} />
